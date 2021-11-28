@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: httpserver
+  name: httpserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: httpserver
+  template:
+    metadata:
+      labels:
+        run: httpserver
+    spec:
+      containers:
+        - image: michaelindeui/httpserver:v1.0
+          name: httpserver
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: healthz
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      qosClass: Burstable
